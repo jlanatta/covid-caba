@@ -1,0 +1,2 @@
+bundle
+rake environment resque:scheduler
