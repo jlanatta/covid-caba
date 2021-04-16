@@ -14,9 +14,10 @@ services:
       RAILS_ENV: ${RAILS_ENV}
       REDIS_URL: ${REDIS_URL}
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+      POSTGRES_HOST: db
+      POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      TRN_API_KEY: ${TRN_API_KEY}
-      RAILS_SERVE_STATIC_FILES: ${RAILS_SERVE_STATIC_FILES}
+      DATA_FILE_URL: ${DATA_FILE_URL}
   worker:
     image: jlanatta/covid:latest
     command: ["./wait-for-it.sh", "web:3000", "--", "./bin/docker/worker.sh"]
@@ -25,15 +26,15 @@ services:
       - redis
     volumes:
       - /home/ubuntu/docker_data/covid/log/worker:/covid/log
-      - 'data_files:/data'
     environment:
       QUEUE: '*'
       RAILS_ENV: ${RAILS_ENV}
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       REDIS_URL: ${REDIS_URL}
+      POSTGRES_HOST: db
+      POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      TRACKER_DATA_FILES_FOLDER: ${TRACKER_DATA_FILES_FOLDER}
-      TRN_API_KEY: ${TRN_API_KEY}
+      DATA_FILE_URL: ${DATA_FILE_URL}
   scheduler:
     image: jlanatta/covid:latest
     command: ["./wait-for-it.sh", "web:3000", "--", "./bin/docker/scheduler.sh"]
@@ -42,14 +43,14 @@ services:
       - redis
     volumes:
       - /home/ubuntu/docker_data/covid/log/scheduler:/covid/log
-      - 'data_files:/data'
     environment:
       RAILS_ENV: ${RAILS_ENV}
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       REDIS_URL: ${REDIS_URL}
+      POSTGRES_HOST: db
+      POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      TRACKER_DATA_FILES_FOLDER: ${TRACKER_DATA_FILES_FOLDER}
-      TRN_API_KEY: ${TRN_API_KEY}
+      DATA_FILE_URL: ${DATA_FILE_URL}
   db:
     image: postgres:latest
     ports:
@@ -57,7 +58,7 @@ services:
     volumes:
       - 'postgres:/var/lib/postgresql/data'
     environment:
-      POSTGRES_USER: bm_tracker
+      POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   redis:
     image: redis:latest

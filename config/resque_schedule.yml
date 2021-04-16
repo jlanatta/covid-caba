@@ -1,4 +1,4 @@
-fetch_data_files:
+fetch_data_file:
   class: ActiveJob::QueueAdapters::ResqueAdapter::JobWrapper
   queue: default
   cron: "0 0 * * *"
