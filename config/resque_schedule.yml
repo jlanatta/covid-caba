@@ -1,0 +1,10 @@
+fetch_data_files:
+  class: ActiveJob::QueueAdapters::ResqueAdapter::JobWrapper
+  queue: default
+  cron: "0 0 * * *"
+  args:
+    -
+      job_class: FetchAndProcessDataFileJob
+      job_id: #{SecureRandom.uuid}
+      queue_name: default
+      queue: default

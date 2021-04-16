@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Covid</title>
+    <title>COVID-19 @ CABA</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all' , 'data-turbolinks-track':'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track':'reload' %>
   </head>
-
   <body>
-    <%= yield %>
+    <!-- Begin page content -->
+    <main role="main" class="container">
+      <%= yield %>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">Datos obtenidos de <a href="https://data.buenosaires.gob.ar/dataset/reporte-covid" target="_blank">https://data.buenosaires.gob.ar</a>.</span>
+        <span class="text-muted float-right">Fecha de actualización: <%= Stat.maximum(:process_date) %></span>
+      </div>
+    </footer>
   </body>
 </html>

@@ -1,20 +1,16 @@
-h1 DATOS COVID
-
-= link_to 'Update data from source', update_data_path, class: 'btn btn-primary button'
-
-ruby:
-  isopadas = StatSubtype.find_by(key:'%_positividad_personas_hisopadas_reportados_del_dia_caba')
-  stats = Stat.where(stat_subtype: isopadas).order(:date).pluck(:date, :value)
-
-= column_chart stats
-
-table.table
-  thead
-    tr
-      th scope="col" Fecha
-      th scope="col" Valor
-  tbody
-    - stats.each do |date, value|
-      tr
-        th scope="row" = date
-        td = value
+h1.text-center DATOS COVID-19 para CABA
+br
+br
+= line_chart stats_percent_isopado, points: false 
+br
+br
+br
+= line_chart stats_totals, points: false 
+br
+br
+br
+= column_chart stats_fallecidos
+br
+br
+br
+br

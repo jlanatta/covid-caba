@@ -25,7 +25,13 @@ gem 'turbolinks', '~> 5'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'chartkick'
-gem 'httparty', '~> 0.18'
+gem 'httparty'
+gem 'resque'
+gem 'resque-cleaner'
+gem 'resque-lock-timeout'
+gem 'resque-scheduler'
+gem 'resque-scheduler-web'
+gem 'resque-status'
 gem 'slim-rails'
 
 group :development, :test do
