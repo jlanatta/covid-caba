@@ -24,6 +24,7 @@ gem 'turbolinks', '~> 5'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+gem 'chartkick'
 gem 'httparty', '~> 0.18'
 gem 'slim-rails'
 

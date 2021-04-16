@@ -6,6 +6,14 @@
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
+import 'bootstrap/dist/js/bootstrap'
+import 'bootstrap/dist/css/bootstrap'
+import '../stylesheets/main.scss'
+import moment from "moment"
+
+require("chartkick/chart.js")
+
+window.moment = moment
 
 Rails.start()
 Turbolinks.start()

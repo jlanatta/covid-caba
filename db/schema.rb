@@ -30,10 +30,9 @@ ActiveRecord::Schema.define(version: 2021_04_16_125728) do
   end
 
   create_table "stats", force: :cascade do |t|
-    t.date "date"
-    t.string "name"
+    t.date "date", null: false
     t.bigint "stat_subtype_id", null: false
-    t.float "value"
+    t.float "value", null: false
     t.date "process_date"
     t.integer "process_identifier"
     t.datetime "created_at", precision: 6, null: false

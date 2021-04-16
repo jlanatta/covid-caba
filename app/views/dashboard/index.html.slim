@@ -1,1 +1,20 @@
 h1 DATOS COVID
+
+= link_to 'Update data from source', update_data_path, class: 'btn btn-primary button'
+
+ruby:
+  isopadas = StatSubtype.find_by(key:'%_positividad_personas_hisopadas_reportados_del_dia_caba')
+  stats = Stat.where(stat_subtype: isopadas).order(:date).pluck(:date, :value)
+
+= column_chart stats
+
+table.table
+  thead
+    tr
+      th scope="col" Fecha
+      th scope="col" Valor
+  tbody
+    - stats.each do |date, value|
+      tr
+        th scope="row" = date
+        td = value
