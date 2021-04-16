@@ -1,16 +1,18 @@
 h1.text-center DATOS COVID-19 para CABA
 h2.text-center Últimos #{@months} meses
 br
-h3 Casos
-= line_chart stats_totals, points: false, discrete: true 
-h3 Hisopados
+h3 Casos vs Hisopados
+= column_chart stats_totals, points: false, discrete: true 
+h3 % de Positividad de Hisopados
 = line_chart stats_percent_isopado, points: false, discrete: true 
 h3 Fallecidos
 = column_chart stats_fallecidos
 h3 Camas pacientes graves
 span
-  | Total de camas graves disponibles: &nbsp;
-  = @total_camas_graves
+  | Total de camas graves públicas disponibles: &nbsp;
+  strong = @total_camas_graves
+  br
+  | Los valores no reflejan camas ocupadas por pacientes no-covid
 = column_chart stats_camas, stacked: true
 br
 br
