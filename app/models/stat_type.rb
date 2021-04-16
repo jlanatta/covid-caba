@@ -1,0 +1,2 @@
+class StatType < ApplicationRecord
+end
