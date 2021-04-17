@@ -1,8 +1,12 @@
 h1.text-center DATOS COVID-19 para CABA
-h2.text-center Últimos #{@months} meses
 br
+br
+= form_with(method: :get) do |form|
+  select.form-select.form-select-lg.mb-3 aria-label=(".form-select-lg example") onchange='form.submit()' name='months'
+    - [1, 2, 3, 6, 12].each do |m|
+      option[value="#{m}" selected=("selected" if m == @months)] #{m > 1 ? "Últimos #{m} meses" : "Último mes"}
 h3 Casos vs Hisopados
-= column_chart stats_totals, points: false, discrete: true 
+= line_chart stats_totals, points: false, discrete: true 
 h3 % de Positividad de Hisopados
 = line_chart stats_percent_isopado, points: false, discrete: true 
 h3 Fallecidos

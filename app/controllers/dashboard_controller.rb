@@ -7,7 +7,7 @@ class DashboardController < ApplicationController
   def index
     subtype = subtype_for("total_de_camas_sistema_publico", "graves")
     @total_camas_graves = subtype.stats.maximum(:value)
-    @months = 12
+    @months = params['months']&.to_i || 2
   end
 
   def stats_camas
@@ -17,9 +17,6 @@ class DashboardController < ApplicationController
     ]
     stats_for_keys(keys)
   end
-  
-  # ["total_de_camas_sistema_publico", "leves_hoteles_hospitales"],
-  # ["total_de_camas_sistema_publico", "moderados"],
 
   def stats_percent_isopado
     keys = [

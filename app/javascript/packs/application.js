@@ -11,6 +11,7 @@ import moment from "moment"
 require("chartkick/chart.js")
 
 window.moment = moment
+window.Rails = Rails
 
 Rails.start()
 Turbolinks.start()
