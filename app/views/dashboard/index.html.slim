@@ -1,6 +1,7 @@
 h1.text-center DATOS COVID-19 para CABA
-br
-br
+.bs-callout.bs-callout-danger
+  h4 Advertencia
+  | A pesar que los datos aquí mostrados fueron obtenidos del sitio oficial del gobierno de la Ciudad Autónoma de Buenos Aires. Cualquier extrapolación o suposición que el lector haga a partir de ellos es pura responsabilidad del lector.
 = form_with(method: :get) do |form|
   select.form-select.form-select-lg.mb-3 aria-label=(".form-select-lg example") onchange='form.submit()' name='months'
     - [1, 2, 3, 6, 12].each do |m|
@@ -18,7 +19,3 @@ span
   br
   | Los valores no reflejan camas ocupadas por pacientes no-covid
 = column_chart stats_camas, stacked: true
-br
-br
-br
-br

@@ -10,10 +10,10 @@ class DashboardController < ApplicationController
     @months = params['months']&.to_i || 2
   end
 
-  def stats_camas
+  def stats_totals
     keys = [
-      ["ocupacion_de_camas_sistema_publico", "graves_arm"],
-      ["ocupacion_de_camas_sistema_publico", "graves_no_arm"],
+      ["personas_hisopadas", "personas_hisopadas_reportados_del_dia_caba"],
+      ['casos_residentes', 'casos_confirmados_reportados_del_dia'],
     ]
     stats_for_keys(keys)
   end
@@ -21,15 +21,7 @@ class DashboardController < ApplicationController
   def stats_percent_isopado
     keys = [
       ['personas_hisopadas', '%_positividad_personas_hisopadas_reportadas_del_dia_totales'],
-    ]
-    stats_for_keys(keys)
-  end
-
-  def stats_totals
-    keys = [
-      ['casos_residentes', 'casos_confirmados_reportados_del_dia'],
-      ["personas_hisopadas", "personas_hisopadas_reportados_del_dia_caba"],
-    ]
+    ]  
     stats_for_keys(keys)
   end
 
@@ -37,6 +29,14 @@ class DashboardController < ApplicationController
     keys = [
       ['casos_residentes', 'fallecidos_reportados_del_dia'],
     ]
+    stats_for_keys(keys)
+  end
+
+  def stats_camas
+    keys = [
+      ["ocupacion_de_camas_sistema_publico", "graves_no_arm"],
+      ["ocupacion_de_camas_sistema_publico", "graves_arm"],
+    ]  
     stats_for_keys(keys)
   end
 
