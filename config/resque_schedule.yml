@@ -1,7 +1,7 @@
 fetch_data_file:
   class: ActiveJob::QueueAdapters::ResqueAdapter::JobWrapper
   queue: default
-  cron: "0 0 * * *"
+  cron: "0 20,0 * * *"
   args:
     -
       job_class: FetchAndProcessDataFileJob
