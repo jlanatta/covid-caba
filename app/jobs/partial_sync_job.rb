@@ -1,17 +1,19 @@
-class FetchAndProcessDataFileJob < ApplicationJob
+class PartialSyncJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
+    max_date = Stat.maximum(:date)
+
     Rails.logger.info('Downloading data file')
     response = HTTParty.get(ENV.fetch('DATA_FILE_URL'))
     Rails.logger.info('Data file downloaded, processing...')
     csv = response.parsed_response
     csv.shift #remove headers
 
-    Stat.delete_all
-
     csv.each do |row|
       date = Date.parse(row[0][0,9])
+      unless date > max_date next
+
       type = StatType.find_or_create_by(key: row[2])
       subtype = StatSubtype.find_or_create_by(stat_type: type, key: row[3])
       value = Float(row[4])

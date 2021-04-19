@@ -1,10 +1,20 @@
-fetch_data_file:
+partial_sync:
   class: ActiveJob::QueueAdapters::ResqueAdapter::JobWrapper
   queue: default
-  cron: "0 20,0 * * *"
+  cron: "* 8,16,20 * * *"
   args:
     -
-      job_class: FetchAndProcessDataFileJob
+      job_class: PartialSyncJob
+      job_id: #{SecureRandom.uuid}
+      queue_name: default
+      queue: default
+full_sync:
+  class: ActiveJob::QueueAdapters::ResqueAdapter::JobWrapper
+  queue: default
+  cron: "0 0 * * 0"
+  args:
+    -
+      job_class: FullSyncJob
       job_id: #{SecureRandom.uuid}
       queue_name: default
       queue: default
