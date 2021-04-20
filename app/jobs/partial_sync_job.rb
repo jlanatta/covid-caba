@@ -12,7 +12,7 @@ class PartialSyncJob < ApplicationJob
 
     csv.each do |row|
       date = Date.parse(row[0][0,9])
-      unless date > max_date next
+      next unless date > max_date
 
       type = StatType.find_or_create_by(key: row[2])
       subtype = StatSubtype.find_or_create_by(stat_type: type, key: row[3])
