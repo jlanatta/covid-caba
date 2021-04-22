@@ -1,7 +1,7 @@
 partial_sync:
   class: ActiveJob::QueueAdapters::ResqueAdapter::JobWrapper
   queue: default
-  cron: "* 8,16,20 * * *"
+  cron: "0 * * * *"
   args:
     -
       job_class: PartialSyncJob
