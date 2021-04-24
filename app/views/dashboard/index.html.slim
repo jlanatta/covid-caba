@@ -1,11 +1,12 @@
-h1.text-center DATOS COVID-19 para CABA
-.bs-callout.bs-callout-danger
-  h4 Advertencia
-  | A pesar que los datos aquí mostrados fueron obtenidos del sitio oficial del gobierno de la Ciudad Autónoma de Buenos Aires. Cualquier correlación o extrapolación que el lector haga a partir de ellos es pura responsabilidad del lector.
 = form_with(method: :get) do |form|
-  select.form-select.form-select-lg.mb-3 aria-label=(".form-select-lg example") onchange='form.submit()' name='months'
-    - [1, 2, 3, 6, 12].each do |m|
-      option[value="#{m}" selected=("selected" if m == @months)] #{m > 1 ? "Últimos #{m} meses" : "Último mes"}
+  .row.align-items-center
+    .col-sm
+      select.form-select.form-select-lg aria-label=(".form-select-lg example") onchange='form.action="/";form.submit()' name='months'
+        - [1, 2, 3, 6, 12].each do |m|
+          option[value="#{m}" selected=("selected" if m == @months)] #{m > 1 ? "Últimos #{m} meses" : "Último mes"}
+    .col-sm-1
+      button.btn.btn-primary(onclick='form.action="retrieve_data";')
+        | Actualizar
 h3 Casos vs Hisopados
 = line_chart stats_totals, points: false, discrete: true 
 h3 % de Positividad de Hisopados

@@ -12,15 +12,19 @@ html
   body
     script[src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"]
     .container[style="margin-bottom:100px;"]
+      h1.text-center DATOS COVID-19 para CABA
+      .bs-callout.bs-callout-danger
+        h4 Advertencia
+        | A pesar que los datos aquí mostrados fueron obtenidos del sitio oficial del gobierno de la Ciudad Autónoma de Buenos Aires. Cualquier correlación o extrapolación que el lector haga a partir de ellos es pura responsabilidad del lector.
+      = render partial: 'layouts/flash', flash: flash
       = yield
     footer.footer
       .container
-
-      span.text-muted
-        | Datos obtenidos de 
-        a[href="https://data.buenosaires.gob.ar/dataset/reporte-covid" target="_blank"]
-          | https://data.buenosaires.gob.ar
-        | .
-      span.text-muted.float-end
-        | Fecha de actualización: 
-        = Stat.maximum(:process_date)
+        span.text-muted
+          | Datos obtenidos de 
+          a[href="https://data.buenosaires.gob.ar/dataset/reporte-covid" target="_blank"]
+            | https://data.buenosaires.gob.ar
+          | .
+        span.text-muted.float-end
+          | Fecha de actualización: 
+          = Stat.maximum(:process_date)
