@@ -26,7 +26,6 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'dotenv-rails', require: 'dotenv/rails-now', groups: [:development, :test]
 
-gem 'chartkick'
 gem 'httparty'
 gem 'resque'
 gem 'resque-cleaner'

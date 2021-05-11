@@ -1,11 +1,11 @@
 class DashboardController < ApplicationController
   helper_method :stats_percent_isopado, :stats_totals, :stats_fallecidos, :stats_camas
   before_action :load_extras, only: %i[index retrieve_data]
+  
   ## List keys using:
   ## StatSubtype.all.map {|s| [s.stat_type.key, s.key]}.sort
 
-  def index
-  end
+  def index;end
 
   def retrieve_data
     PartialSyncJob.perform_later
