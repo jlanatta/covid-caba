@@ -1,0 +1,39 @@
+canvas#chart_cases_moving_average[height='250px' width='1000px']
+ruby:
+  cases_data = data_for(:casos_residentes, :casos_confirmados_reportados_del_dia)
+  swabbing_data = data_for(:personas_hisopadas, :personas_hisopadas_reportados_del_dia_caba)
+
+javascript:
+    const casesColor = function (context) {
+        const isWeekend = new Date(context.raw.x).getDay() >= 5;
+        return isWeekend ? palletteAlpha[1] : pallette[1];
+    }
+    const ctx1 = document.getElementById('chart_cases_moving_average').getContext('2d');
+    new Chart(ctx1, {
+        options: {
+            scales: {
+                x: [{
+                    type: 'time',
+                }]
+            }
+        },
+        data: {
+            datasets: [{
+                type: 'bar',
+                label: 'Casos',
+                backgroundColor: casesColor,
+                borderColor: pallette[1],
+                borderWidth: 1,
+                data: [#{cases_data}]
+            }, {
+                type: 'line',
+                label: 'Hisopados',
+                tension: 0.3,
+                pointRadius: 0,
+                borderWidth: 2,
+                backgroundColor: pallette[2],
+                borderColor: pallette[2],
+                data: [#{swabbing_data}]
+            }]
+        }
+    });

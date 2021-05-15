@@ -1,0 +1,46 @@
+canvas#chart_beds[height='250px' width='1000px']
+ruby:
+  no_arm_beds_data = data_for(:ocupacion_de_camas_sistema_publico, :graves_no_arm)
+  arm_beds_data = data_for(:ocupacion_de_camas_sistema_publico, :graves_arm)
+
+javascript:
+    const noArmBedsColor = function (context) {
+        const isWeekend = new Date(context.raw.x).getDay() >= 5;
+        return isWeekend ? palletteAlpha[2] : pallette[2];
+    }
+    const armBedsColor = function (context) {
+        const isWeekend = new Date(context.raw.x).getDay() >= 5;
+        return isWeekend ? palletteAlpha[4] : pallette[4];
+    }
+    const ctx4 = document.getElementById('chart_beds').getContext('2d');
+    new Chart(ctx4, {
+        options: {
+            scales: {
+                x: {
+                    stacked: true,
+                    type: 'time',
+                },
+                y: {
+                    max: #{@total_camas_graves + 100},
+                    stacked: true
+                }
+            }
+        },
+        data: {
+            datasets: [{
+                type: 'bar',
+                label: 'Camas ocupadas (c/respirador)',
+                borderWidth: 1,
+                backgroundColor: armBedsColor,
+                borderColor: pallette[4],
+                data: [#{arm_beds_data}]
+            }, {
+                type: 'bar',
+                label: 'Camas ocupadas',
+                borderWidth: 1,
+                backgroundColor: noArmBedsColor,
+                borderColor: pallette[2],
+                data: [#{no_arm_beds_data}]
+            }]
+        }
+    });

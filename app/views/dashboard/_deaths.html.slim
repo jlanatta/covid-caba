@@ -1,0 +1,29 @@
+canvas#chart_deaths[height='250px' width='1000px']
+ruby:
+  deaths_data = data_for(:casos_residentes, :fallecidos_reportados_del_dia)
+
+javascript:
+    const deathsColor = function (context) {
+        const isWeekend = new Date(context.raw.x).getDay() >= 5;
+        return isWeekend ? palletteAlpha[4] : pallette[4];
+    }
+    const ctx3 = document.getElementById('chart_deaths').getContext('2d');
+    new Chart(ctx3, {
+        options: {
+            scales: {
+                x: [{
+                    type: 'time',
+                }]
+            }
+        },
+        data: {
+            datasets: [{
+                type: 'bar',
+                label: 'Muertes',
+                borderWidth: 1,
+                backgroundColor: deathsColor,
+                borderColor: pallette[4],
+                data: [#{deaths_data}]
+            }]
+        }
+    });

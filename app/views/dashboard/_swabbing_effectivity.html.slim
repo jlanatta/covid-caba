@@ -1,0 +1,26 @@
+canvas#chart_swabbing_effectivity[height='250px' width='1000px']
+ruby:
+  swabbing_effectivity_data = data_for('personas_hisopadas', '%_positividad_personas_hisopadas_reportadas_del_dia_totales')
+
+javascript:
+    const ctx2 = document.getElementById('chart_swabbing_effectivity').getContext('2d');
+    new Chart(ctx2, {
+        options: {
+            scales: {
+                x: [{
+                    type: 'time',
+                }]
+            }
+        },
+        data: {
+            datasets: [{
+                type: 'line',
+                label: '% positividad de hisopados',
+                tension: 0.3,
+                pointRadius: 0,
+                backgroundColor: pallette[3],
+                borderColor: pallette[3],
+                data: [#{swabbing_effectivity_data}]
+            }]
+        }
+    });
