@@ -7,10 +7,9 @@
     .col-sm-1
       button.btn.btn-primary(onclick='form.action="retrieve_data";')
         | Actualizar
-h3 Otro 
-canvas#chart_cases_moving_average[height='300px' width='1000px']
 h3 Casos vs Hisopados
-/= line_chart stats_totals, points: false, discrete: true 
+= render 'cases_vs_swabbings'
+/= line_chart stats_totals, points: false, discrete: true
 h3 % de Positividad de Hisopados
 /= line_chart stats_percent_isopado, points: false, discrete: true 
 h3 Fallecidos
@@ -22,48 +21,3 @@ span
   br
   | Los valores no reflejan camas ocupadas por pacientes no-covid
 /= column_chart stats_camas, stacked: true
-ruby:
-  cases = stats_totals.last[:data]
-  cases = cases.map do |date, value|
-    "{x: '#{date.to_s}', y: #{value}}"
-  end
-  cases = cases.join(',').html_safe
-  puts cases
-
-javascript:
-  let backgroundColor = [
-    'rgba(255, 99, 132, 0.2)',
-  ];
-  let borderColor = [
-    'rgba(255, 99, 132, 1)',
-  ];
-  var ctx = document.getElementById('chart_cases_moving_average').getContext('2d');
-
-  var myChart = new Chart(ctx, {
-    type: 'bar',
-    options: {
-      scales: {
-        xAxes: [{
-          type: 'time',
-        }]
-      }
-    },
-    data: {
-      datasets: [{
-        label: 'Demo',
-        data: [#{cases} ],
-        backgroundColor: backgroundColor,
-        //borderColor: borderColor,
-        borderWidth: 1
-      }]
-    }
-  });
-
-                  pointBackgroundColor: function(context) {
-                    var index = context.dataIndex;
-                    var value = context.dataset.data[index];
-                    return value < 0 ? 'red' :  // draw negative values in red
-                        index % 2 ? 'blue' :    // else, alternate values in blue and green
-                            'green';
-                }
-

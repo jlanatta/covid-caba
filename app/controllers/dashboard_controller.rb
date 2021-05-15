@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-  helper_method :stats_percent_isopado, :stats_totals, :stats_fallecidos, :stats_camas
+  helper_method :data_for, :stats_percent_isopado, :stats_totals, :stats_fallecidos, :stats_camas
   before_action :load_extras, only: %i[index retrieve_data]
   
   ## List keys using:
@@ -13,32 +13,33 @@ class DashboardController < ApplicationController
     render :index
   end
 
+
   def stats_totals
     keys = [
-      ["personas_hisopadas", "personas_hisopadas_reportados_del_dia_caba"],
-      ['casos_residentes', 'casos_confirmados_reportados_del_dia'],
+      %w[personas_hisopadas personas_hisopadas_reportados_del_dia_caba],
+      %w[casos_residentes casos_confirmados_reportados_del_dia],
     ]
     stats_for_keys(keys)
   end
 
   def stats_percent_isopado
     keys = [
-      ['personas_hisopadas', '%_positividad_personas_hisopadas_reportadas_del_dia_totales'],
+      %w[personas_hisopadas %_positividad_personas_hisopadas_reportadas_del_dia_totales],
     ]  
     stats_for_keys(keys)
   end
 
   def stats_fallecidos
     keys = [
-      ['casos_residentes', 'fallecidos_reportados_del_dia'],
+      %w[casos_residentes fallecidos_reportados_del_dia],
     ]
     stats_for_keys(keys)
   end
 
   def stats_camas
     keys = [
-      ["ocupacion_de_camas_sistema_publico", "graves_no_arm"],
-      ["ocupacion_de_camas_sistema_publico", "graves_arm"],
+      %w[ocupacion_de_camas_sistema_publico graves_no_arm],
+      %w[ocupacion_de_camas_sistema_publico graves_arm],
     ]  
     stats_for_keys(keys)
   end
@@ -56,6 +57,13 @@ class DashboardController < ApplicationController
     subtypes.map { |subtype|
       { name: subtype.key.titlecase, data: Stat.where('date > ?', @months.months.ago).where(stat_subtype: subtype).order(:date).pluck(:date, :value) }
     }
+  end
+
+  def data_for(type, subtype)
+    subtype = subtype_for(type, subtype)
+    data = Stat.where('date > ?', @months.months.ago).where(stat_subtype: subtype).order(:date).pluck(:date, :value)
+    data = data.map { |date, value| "{x: '#{date.to_s}', y: #{value}}" }
+    data.join(',').html_safe
   end
 
   def subtype_for(type, subtype)
