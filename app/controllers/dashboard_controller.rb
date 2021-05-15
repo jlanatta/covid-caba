@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-  helper_method :data_for
+  helper_method :data_for, :moving_average_data_for
   before_action :load_extras, only: %i[index retrieve_data]
 
   ## List keys using:
@@ -22,8 +22,16 @@ class DashboardController < ApplicationController
   end
 
   def data_for(type, subtype)
+    base_data_for type, subtype, :value
+  end
+
+  def moving_average_data_for(type, subtype)
+    base_data_for type, subtype, :moving_average
+  end
+
+  def base_data_for(type, subtype, field)
     subtype = subtype_for(type, subtype)
-    data = Stat.where('date > ?', @months.months.ago).where(stat_subtype: subtype).order(:date).pluck(:date, :value)
+    data = Stat.where('date > ?', @months.months.ago).where(stat_subtype: subtype).order(:date).pluck(:date, field)
     data = data.map { |date, value| "{x: '#{date}', y: #{value}}" }
     data.join(',').html_safe
   end

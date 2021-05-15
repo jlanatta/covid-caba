@@ -1,11 +1,12 @@
 canvas#chart_deaths[height='250px' width='1000px']
 ruby:
   deaths_data = data_for(:casos_residentes, :fallecidos_reportados_del_dia)
+  moving_average_deaths_data = moving_average_data_for(:casos_residentes, :fallecidos_reportados_del_dia)
 
 javascript:
     const deathsColor = function (context) {
         const isWeekend = new Date(context.raw.x).getDay() >= 5;
-        return isWeekend ? palletteAlpha[4] : pallette[4];
+        return isWeekend ? paletteAlpha[deathsColorIndex] : paletteSemiAlpha[deathsColorIndex];
     }
     const ctx3 = document.getElementById('chart_deaths').getContext('2d');
     new Chart(ctx3, {
@@ -18,11 +19,20 @@ javascript:
         },
         data: {
             datasets: [{
+                type: 'line',
+                label: 'Muertes (promedio 5 días)',
+                tension: 0.3,
+                pointRadius: 0,
+                borderWidth: 2,
+                backgroundColor: palette[deathsAvgColorIndex],
+                borderColor: palette[deathsAvgColorIndex],
+                data: [#{moving_average_deaths_data}]
+            }, {
                 type: 'bar',
                 label: 'Muertes',
                 borderWidth: 1,
                 backgroundColor: deathsColor,
-                borderColor: pallette[4],
+                borderColor: palette[deathsColorIndex],
                 data: [#{deaths_data}]
             }]
         }

@@ -8,7 +8,6 @@ import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import '../stylesheets/main.scss'
 import moment from "moment"
-require("chartkick/chart.js")
 
 window.moment = moment
 window.Rails = Rails
