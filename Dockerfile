@@ -7,7 +7,6 @@ COPY Gemfile /covid/Gemfile
 COPY Gemfile.lock /covid/Gemfile.lock
 RUN bundle install
 COPY . /covid
-RUN rails assets:precompile
 
 # Add a script to be executed every time the container starts.
 COPY entrypoint.sh /usr/bin/
