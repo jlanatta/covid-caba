@@ -1,12 +1,13 @@
 canvas#chart_cases_moving_average[height='250px' width='1000px']
 ruby:
   cases_data = data_for(:casos_residentes, :casos_confirmados_reportados_del_dia)
+  moving_average_data = moving_average_data_for(:casos_residentes, :casos_confirmados_reportados_del_dia)
   swabbing_data = data_for(:personas_hisopadas, :personas_hisopadas_reportados_del_dia_caba)
 
 javascript:
     const casesColor = function (context) {
         const isWeekend = new Date(context.raw.x).getDay() >= 5;
-        return isWeekend ? palletteAlpha[1] : pallette[1];
+        return isWeekend ? paletteAlpha[casesColorIndex] : paletteSemiAlpha[casesColorIndex];
     }
     const ctx1 = document.getElementById('chart_cases_moving_average').getContext('2d');
     new Chart(ctx1, {
@@ -19,10 +20,19 @@ javascript:
         },
         data: {
             datasets: [{
+                type: 'line',
+                label: 'Casos (promedio 5 días)',
+                tension: 0.3,
+                pointRadius: 0,
+                borderWidth: 2,
+                backgroundColor: palette[casesAvgColorIndex],
+                borderColor: palette[casesAvgColorIndex],
+                data: [#{moving_average_data}]
+            }, {
                 type: 'bar',
                 label: 'Casos',
                 backgroundColor: casesColor,
-                borderColor: pallette[1],
+                borderColor: palette[casesColorIndex],
                 borderWidth: 1,
                 data: [#{cases_data}]
             }, {
@@ -31,8 +41,8 @@ javascript:
                 tension: 0.3,
                 pointRadius: 0,
                 borderWidth: 2,
-                backgroundColor: pallette[2],
-                borderColor: pallette[2],
+                backgroundColor: palette[swabbingColorIndex],
+                borderColor: palette[swabbingColorIndex],
                 data: [#{swabbing_data}]
             }]
         }

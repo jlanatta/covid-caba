@@ -1,3 +1,14 @@
+javascript:
+    const casesColorIndex = 1
+    const casesAvgColorIndex = 0
+    const swabbingColorIndex = 2
+
+    const deathsColorIndex = 1
+    const deathsAvgColorIndex = 0
+
+    const armBedsColorIndex = 4
+    const nonArmBedsColorIndex = 3
+
 = form_with(method: :get) do |form|
   .row.align-items-center
     .col-sm
@@ -9,8 +20,8 @@
         | Actualizar
 h3 Casos vs Hisopados
 = render 'cases_vs_swabbing'
-h3 % de Positividad de Hisopados
-= render 'swabbing_effectivity'
+/ h3 % de Positividad de Hisopados
+/ = render 'swabbing_effectivity'
 h3 Fallecidos
 = render 'deaths'
 h3 Camas pacientes graves

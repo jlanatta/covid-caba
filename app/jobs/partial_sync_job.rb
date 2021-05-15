@@ -25,6 +25,8 @@ class PartialSyncJob < ApplicationJob
       Rails.logger.info('Stat created!')
     end
 
+    CalculateMovingAverageJob.perform_later
+
     Rails.logger.info('Data file processed!')
   end
 end
