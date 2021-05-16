@@ -1,6 +1,15 @@
 version: '3'
 services:
-  web:  
+  db:
+    image: postgres:latest
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  redis:
+    image: redis:latest
+  web:
     image: jlanatta/covid-caba:latest
     command: "./bin/docker/web.sh"
     ports:
@@ -51,19 +60,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       DATA_FILE_URL: ${DATA_FILE_URL}
-  db:
-    image: postgres:latest
-    ports:
-      - "5432"
-    volumes:
-      - 'postgres:/var/lib/postgresql/data'
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  redis:
-    image: redis:latest
-    ports:
-      - "6379"
 
 volumes:
   postgres:
