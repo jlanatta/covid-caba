@@ -2,7 +2,7 @@ canvas#chart_beds[height='250px' width='1000px']
 ruby:
   no_arm_beds_data = data_for(:ocupacion_de_camas_sistema_publico, :graves_no_arm)
   arm_beds_data = data_for(:ocupacion_de_camas_sistema_publico, :graves_arm)
-
+  available_beds = data_for(:total_de_camas_sistema_publico, :graves)
 javascript:
     const armBedsColor = function (context) {
         const isWeekend = new Date(context.raw.x).getDay() >= 5;
@@ -41,6 +41,15 @@ javascript:
                 backgroundColor: noArmBedsColor,
                 borderColor: palette[nonArmBedsColorIndex],
                 data: [#{no_arm_beds_data}]
+            }, {
+                type: 'line',
+                label: 'Camas disponibles',
+                data: [#{available_beds}],
+                tension: 0,
+                pointRadius: 0,
+                borderWidth: 2,
+                backgroundColor: palette[availableBedsColorIndex],
+                borderColor: palette[availableBedsColorIndex],
             }]
         }
     });
