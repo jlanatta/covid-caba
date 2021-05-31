@@ -1,0 +1,28 @@
+#---------- Filebeat inputs ----------
+filebeat.inputs:
+  - type: log
+    enabled: true
+    json:
+      message_key: message
+      keys_under_root: true
+      overwrite_keys: true
+    paths:
+      - /log_data/log/worker/lograge_development.log
+      - /log_data/log/scheduler/lograge_development.log
+      - /log_data/log/web/lograge_development.log
+      - /log_data/log/worker/lograge_production.log
+      - /log_data/log/scheduler/lograge_production.log
+      - /log_data/log/web/lograge_production.log
+#ElasticSearch template setting
+setup.ilm.enabled: false
+setup.template.enabled: false
+setup.template.name: "efk-rails-sync-dev"
+setup.template.pattern: "efk-rails-sync-dev-*"
+#---------- Kibana ----------
+setup.kibana:
+  host: "kibana:5601"
+#---------- Elasticsearch output ----------
+output.elasticsearch:
+  # Array of hosts to connect to.
+  hosts: ["elasticsearch:9200"]
+  index: "sync-log-dev"

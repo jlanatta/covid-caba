@@ -27,6 +27,8 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'dotenv-rails', require: 'dotenv/rails-now', groups: %i[development test]
 
 gem 'httparty'
+gem 'lograge', '~> 0.11.2'
+gem 'lograge-sql', '~> 1'
 gem 'resque'
 gem 'resque-cleaner'
 gem 'resque-lock-timeout'
@@ -54,6 +56,3 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

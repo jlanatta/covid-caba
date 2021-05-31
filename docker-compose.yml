@@ -2,6 +2,7 @@ version: '3'
 services:
   db:
     image: postgres:latest
+    restart: always
     volumes:
       - 'postgres:/var/lib/postgresql/data'
     environment:
@@ -9,8 +10,10 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
   redis:
     image: redis:latest
+    restart: always
   web:
     image: jlanatta/covid-caba:latest
+    restart: always
     command: "./bin/docker/web.sh"
     ports:
       - "${RAILS_PORT}:3000"
@@ -18,7 +21,7 @@ services:
       - db
       - redis
     volumes:
-      - /home/ubuntu/docker_data/covid/log/web:/covid/log
+      - ${DOCKER_DATA_DIR}/covid/log/web:/covid/log
     environment:
       RAILS_ENV: ${RAILS_ENV}
       REDIS_URL: ${REDIS_URL}
@@ -29,12 +32,13 @@ services:
       DATA_FILE_URL: ${DATA_FILE_URL}
   worker:
     image: jlanatta/covid-caba:latest
+    restart: always
     command: ["./wait-for-it.sh", "web:3000", "--", "./bin/docker/worker.sh"]
     links:
       - db
       - redis
     volumes:
-      - /home/ubuntu/docker_data/covid/log/worker:/covid/log
+      - ${DOCKER_DATA_DIR}/covid/log/worker:/covid/log
     environment:
       QUEUE: '*'
       RAILS_ENV: ${RAILS_ENV}
@@ -46,12 +50,13 @@ services:
       DATA_FILE_URL: ${DATA_FILE_URL}
   scheduler:
     image: jlanatta/covid-caba:latest
+    restart: always
     command: ["./wait-for-it.sh", "web:3000", "--", "./bin/docker/scheduler.sh"]
     links:
       - db
       - redis
     volumes:
-      - /home/ubuntu/docker_data/covid/log/scheduler:/covid/log
+      - ${DOCKER_DATA_DIR}/covid/log/scheduler:/covid/log
     environment:
       RAILS_ENV: ${RAILS_ENV}
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
@@ -60,6 +65,44 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       DATA_FILE_URL: ${DATA_FILE_URL}
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_DOCKER_TAG}
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elastic_volume:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+  kibana:
+    image: docker.elastic.co/kibana/kibana:${ELASTIC_DOCKER_TAG}
+    depends_on:
+      - elasticsearch
+#    volumes:
+#      - ./elastic/kibana.yml:/usr/share/kibana/config/kibana.yml
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+  firebeat:
+    image: docker.elastic.co/beats/filebeat:${ELASTIC_DOCKER_TAG}
+    user: root
+    environment:
+      - ELASTICSEARCH_HOST=http://elasticsearch:9200
+      - KIBANA_HOST=http://kibana:5601
+    volumes:
+      - /Users/javier/tmp3/docker_data/covid:/log_data/
+      - $PWD/elastic/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - filebeat:/usr/share/filebeat/data
 
 volumes:
   postgres:
+    driver: local
+  filebeat:
+    driver: local
+  elastic_volume:
+    driver: local
