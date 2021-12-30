@@ -14,7 +14,7 @@ javascript:
   .row.align-items-center
     .col-sm
       select.form-select.form-select-lg aria-label=(".form-select-lg example") onchange='form.action="/";form.submit()' name='months'
-        - [1, 2, 3, 6, 12].each do |m|
+        - [1, 2, 3, 6, 12, 18, 24, 36].each do |m|
           option[value="#{m}" selected=("selected" if m == @months)] #{m > 1 ? "Últimos #{m} meses" : "Último mes"}
     / .col-sm-1
     /   button.btn.btn-primary(onclick='form.action="retrieve_data";')
