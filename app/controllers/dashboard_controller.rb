@@ -17,7 +17,7 @@ class DashboardController < ApplicationController
   private
 
   def load_extras
-    @total_camas_graves = subtype_for('total_de_camas_sistema_publico', 'graves').stats.maximum(:value)
+    @total_camas_graves = subtype_for('total_de_camas_sistema_publico', 'graves')&.stats&.maximum(:value) || 0
     @months = params['months']&.to_i || 2
     @average_days = ENV.fetch('AVERAGE_DAYS', '7').to_i
   end
